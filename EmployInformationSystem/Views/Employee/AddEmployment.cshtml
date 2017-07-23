@@ -1,0 +1,64 @@
+﻿@model EmployInformationSystem.Models.Employment
+@section Css
+{
+    @Styles.Render("~/bundles/datatableCss", "~/bundles/jqueryuiCss", "~/bundles/datepickerCss")
+}
+@using (Html.BeginForm("AddEmployment", "Employee", FormMethod.Post, new { id = "popupEmploymentForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col col-md-12">
+            <div class="form-group">
+                <label for="compnayname">Company Name:</label>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Company Name" })
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.ApplicationId)
+                @Html.HiddenFor(x => x.IsChanged)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-6">
+            <div class="form-group">
+                <label for="startdate">Start Date:</label>
+                @Html.TextBoxFor(x => x.StartDate, new { @class = "form-control", @placeholder = "Select Date" })
+            </div>
+        </div>
+        <div class="col col-md-6">
+            <div class="form-group">
+                <label for="enddate">End Date:</label>
+                @Html.TextBoxFor(x => x.EndDate, new { @class = "form-control", @placeholder = "End Date" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-12">
+            <div class="form-group">
+                <label for="designation">Designation:</label>
+                @Html.TextBoxFor(x => x.Designation, new { @class = "form-control", @placeholder = "Designation" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <button type="submit" class="btn btn-sm btn-default pull-right">Save</button>
+            <button type="button" class="btn btn-sm btn-danger pull-right" onclick="history().back();">Cancle</button>
+        </div>
+    </div>
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/datatableJs", "~/bundles/jqueryuiJs", "~/bundles/datepickerJs", "~/bundles/jqueryval", "~/bundles/unobtrusiveJs")
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#StartDate').datetimepicker({
+            defaultDate: new Date(),
+            format: 'DD/MM/YYYY'
+        });
+        $('#EndDate').datetimepicker({
+            defaultDate: new Date(),
+            format: 'DD/MM/YYYY'
+        });
+    });
+</script>

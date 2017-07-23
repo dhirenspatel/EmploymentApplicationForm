@@ -1,0 +1,15 @@
+﻿
+@model EmployInformationSystem.Models.Education
+@{
+    Layout = null;
+}
+
+<h2>Delete Employee</h2>
+@using (Html.BeginForm("ConfrmDeleteEducation", "Employee", FormMethod.Post, new { id = "popupEducationForm" }))
+{
+    @Html.HiddenFor(x => x.Id)
+    <div>
+        <h1>Are You Sure Delete?</h1>
+        <input type="submit" class="btn btn-md btn-danger" value="Delete" />
+    </div>
+}

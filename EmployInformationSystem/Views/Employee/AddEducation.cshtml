@@ -1,0 +1,58 @@
+﻿@model EmployInformationSystem.Models.Education
+@section Css
+{
+    @Styles.Render("~/bundles/jqueryuiCss", "~/bundles/datepickerCss")
+}
+@using (Html.BeginForm("AddEducation", "Employee", FormMethod.Post, new { id = "popupEducationForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col col-md-6">
+            <div class="form-group">
+                <label for="collageuniversity">Collage/University Name:</label>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Collage/University" })
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.ApplicationId)
+                @Html.HiddenFor(x => x.IsChanged)
+            </div>
+        </div>
+        <div class="col col-md-6">
+            <div class="form-group">
+                <label for="year">Year:</label>
+                @Html.TextBoxFor(x => x.Year, new { @class = "form-control", @placeholder = "Year" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-6">
+            <div class="form-group">
+                <label for="degree">Degree:</label>
+                @Html.TextBoxFor(x => x.Degree, new { @class = "form-control", @placeholder = "Degree" })
+            </div>
+        </div>
+        <div class="col col-md-6">
+            <div class="form-group">
+                <label for="percentage">Percentage:</label>
+                @Html.TextBoxFor(x => x.Percentage, new { @class = "form-control", @placeholder = "Percentage" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <button type="submit" class="btn btn-sm btn-default pull-right">Save</button>
+            <button type="button" class="btn btn-sm btn-danger pull-right" onclick="history().back();">Cancle</button>
+        </div>
+    </div>
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryuiJs", "~/bundles/datepickerJs", "~/bundles/jqueryval", "~/bundles/unobtrusiveJs")
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Year').datetimepicker({
+            defaultDate: new Date(),
+            format: 'DD/MM/YYYY'
+        });
+    });
+</script>

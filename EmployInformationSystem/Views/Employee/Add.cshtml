@@ -1,0 +1,385 @@
+﻿@model EmployInformationSystem.Models.ApplicationInfo
+@section Css
+{
+    @Styles.Render("~/bundles/datatableCss", "~/bundles/jqueryuiCss", "~/bundles/datepickerCss")
+}
+@using (Html.BeginForm("Add", "Employee", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Id, new { @Id = "applicationId" })
+    @Html.HiddenFor(x=>x.Contact.Id)
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">Personal Infomation</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="email">First Name:</label>
+                        @Html.TextBoxFor(x => x.Contact.FirstName, new { @class = "form-control", @placeholder = "First Name" })
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="lastName">Last Name:</label>
+                        @Html.TextBoxFor(x => x.Contact.LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        @Html.TextBoxFor(x => x.Contact.Email, new { @class = "form-control", @placeholder = "Email" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-6">
+                    <div class="form-group">
+                        <label for="email">Address:</label>
+                        @Html.TextAreaFor(x => x.Contact.Address, new { @class = "form-control", @placeholder = "Address", @row = "5" })
+                    </div>
+                </div>
+                <div class="col col-md-6">
+                    <div class="form-group">
+                        <label for="mobileno">Mobile No:</label>
+                        @Html.TextBoxFor(x => x.Contact.Phone, new { @class = "form-control", @placeholder = "Mobile" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        @Html.TextBoxFor(x => x.Contact.City, new { @class = "form-control", @placeholder = "City" })
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="state">State:</label>
+                        @Html.TextBoxFor(x => x.Contact.State, new { @class = "form-control", @placeholder = "State" })
+                    </div>
+                </div>
+                <div class="col col-md-4">
+                    <div class="form-group">
+                        <label for="country">Country:</label>
+                        @Html.TextBoxFor(x => x.Contact.Country, new { @class = "form-control", @placeholder = "Country" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Job Apply Infomation</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col col-md-6">
+                    <div class="form-group">
+                        <label for="applyfor">Apply For:</label>
+                        @Html.TextBoxFor(x => x.ApplyFor, new { @class = "form-control", @placeholder = "Apply for" })
+                    </div>
+                </div>
+                <div class="col col-md-6">
+                    <div class="form-group">
+                        <label for="applydate">Apply Date:</label>
+                        @Html.TextBoxFor(x => x.ApplyDate, new { @class = "form-control", @placeholder = "Apply date" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <div class="form-group">
+                        <label for="applydate">Desired:</label>
+
+                        @for (int i = 0; i < Model.DesiredChkItems.Count; i++)
+                        {
+                            <label class="checkbox-inline">
+                                @Html.HiddenFor(m => m.DesiredChkItems[i].Value)
+                                @Html.HiddenFor(m => m.DesiredChkItems[i].Text)
+                                @Html.CheckBoxFor(m => m.DesiredChkItems[i].IsChecked, new { @type = "checkbox", @id = "checkbox_" + i })
+                                @Html.DisplayFor(m => m.DesiredChkItems[i].Text)
+                            </label>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default educationContainer">
+        <div class="panel-heading">
+            Education Infomation
+            <a href="@Url.Action("AddEducation","Employee")" class="popup btn btn-md btn-default pull-right">Add</a>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <table class="table table-bordered" id="educationTbl">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Year</th>
+                            <th>Degree</th>
+                            <th>Percentage</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default employmentContainer">
+        <div class="panel-heading">
+            Employment Infomation
+            <a href="@Url.Action("AddEmployment","Employee")" class="popup btn btn-md btn-default pull-right">Add</a>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <table class="table table-bordered" id="employmentTbl">
+                    <thead>
+                        <tr>
+                            <th>Company Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Designation</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Trust Infomation</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col col-md-6">
+                    <div class="form-group">
+                        <label for="sign">Name(Sign):</label>
+                        @Html.TextBoxFor(x => x.Sign, new { @class = "form-control", @placeholder = "Name(Sign)" })
+                    </div>
+                </div>
+                <div class="col col-md-6">
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        @Html.TextBoxFor(x => x.SignDate, new { @class = "form-control", @placeholder = "Sign date" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <div class="form-group">
+                        <label for="comment">Comment:</label>
+                        @Html.TextAreaFor(x => x.Note, new { @class = "form-control", @placeholder = "Sign date", @row = "5" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-sm btn-default pull-right">Save</button>
+            <button type="button" class="btn btn-sm btn-danger pull-right" onclick="history().back();">Cancle</button>
+        </div>
+    </div>
+
+}
+@section Scripts
+{
+    @Scripts.Render("~/bundles/datatableJs", "~/bundles/jqueryuiJs", "~/bundles/datepickerJs", "~/bundles/jqueryval", "~/bundles/unobtrusiveJs")
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#ApplyDate").datetimepicker({
+            //defaultDate: new Date(),
+            format: 'DD/MM/YYYY'
+        });
+
+        $("#SignDate").datetimepicker({
+           // defaultDate: new Date(),
+            format: 'DD/MM/YYYY'
+        });
+
+        var oTable = $('#educationTbl').DataTable({
+            "ajax": {
+                "url": '@Url.Action("GetEducation", "Employee")',
+                "type": "get",
+                "datatype": "json",
+                "data": { Id: $("#applicationId").val() },
+            },
+            "columns": [
+                { "data": "Name", "autoWidth": true },
+                { "data": "Year", "autoWidth": true },
+                { "data": "Degree", "autoWidth": true },
+                { "data": "Percentage", "autoWidth": true },
+                {
+                    "data": "Id", "width": "50px", "render": function (data) {
+                        return '<a class="popup btn-info btn-sm" href="/Employee/AddEducation/' + data + '">Edit</a>';
+                    }
+                },
+                {
+                    "data": "Id", "width": "50px", "render": function (data) {
+                        return '<a class="popup btn-danger btn-sm" href="/Employee/DeleteEducation/' + data + '">Delete</a>';
+                    }
+                }
+            ]
+        })
+
+        //Use for open a tag
+        $('.educationContainer').on('click', 'a.popup', function (e) {
+            e.preventDefault();
+            OpenPopup($(this).attr('href'));
+        })
+
+        function OpenPopup(pageUrl) {
+            var $pageContent = $('<div/>');
+            $pageContent.load(pageUrl, function () {
+                $('#popupEducationForm', $pageContent).removeData('validator');
+                $('#popupEducationForm', $pageContent).removeData('unobtrusiveValidation');
+                $.validator.unobtrusive.parse('form');
+
+            });
+
+            $dialog = $('<div class="popupWindow" style="overflow:auto"></div>')
+                      .html($pageContent)
+                      .dialog({
+                          draggable: false,
+                          autoOpen: false,
+                          resizable: false,
+                          model: true,
+                          title: 'Add/Edit Education',
+                          height: 550,
+                          width: 600,
+                          close: function () {
+                              $dialog.dialog('destroy').remove();
+                          }
+                      })
+
+            $('.popupWindow').on('submit', '#popupEducationForm', function (e) {
+                var url = $('#popupEducationForm')[0].action;
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: $('#popupEducationForm').serialize(),
+                    success: function (data) {
+                        debugger;
+                        if (data.status) {
+                            $dialog.dialog('close');
+                            oTable.ajax.reload();
+                        }
+                    }
+                })
+
+                e.preventDefault();
+            })
+            $dialog.dialog('open');
+        }
+
+
+        var oEmploymentTable = $('#employmentTbl').DataTable({
+            "ajax": {
+                "url": '@Url.Action("GetEmployment", "Employee")',
+                "type": "get",
+                "datatype": "json",
+                "data": { Id: $("#applicationId").val() },
+            },
+            "columns": [
+                { "data": "Name", "autoWidth": true },
+                {
+                    "data": "StartDate", "autoWidth": true,
+                    "type": "date",
+                    "render": function (value) {
+                        if (value === null) return "";
+
+                        var pattern = /Date\(([^)]+)\)/;
+                        var results = pattern.exec(value);
+                        var dt = new Date(parseFloat(results[1]));
+
+                        return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                    }
+                },
+             {
+                 "data": "EndDate", "autoWidth": true,
+                 "type": "date",
+                 "render": function (value) {
+                     if (value === null) return "";
+
+                     var pattern = /Date\(([^)]+)\)/;
+                     var results = pattern.exec(value);
+                     var dt = new Date(parseFloat(results[1]));
+
+                     return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                 }
+             },
+    { "data": "Designation", "autoWidth": true },
+    {
+        "data": "Id", "width": "50px", "render": function (data) {
+            return '<a class="popup btn-info btn-sm" href="/Employee/AddEmployment/' + data + '">Edit</a>';
+        }
+    },
+    {
+        "data": "Id", "width": "50px", "render": function (data) {
+            return '<a class="popup btn-danger btn-sm" href="/Employee/DeleteEmployment/' + data + '">Delete</a>';
+        }
+    }
+            ]
+        })
+
+        //Use for open a tag
+        $('.employmentContainer').on('click', 'a.popup', function (e) {
+            e.preventDefault();
+            OpenEmploymentPopup($(this).attr('href'));
+        })
+
+        function OpenEmploymentPopup(pageUrl) {
+            var $pageContent = $('<div/>');
+            $pageContent.load(pageUrl, function () {
+                $('#popupEmploymentForm', $pageContent).removeData('validator');
+                $('#popupEmploymentForm', $pageContent).removeData('unobtrusiveValidation');
+                $.validator.unobtrusive.parse('form');
+
+            });
+
+            $dialog = $('<div class="popupEmploymentWindow" style="overflow:auto"></div>')
+                      .html($pageContent)
+                      .dialog({
+                          draggable: false,
+                          autoOpen: false,
+                          resizable: false,
+                          model: true,
+                          title: 'Add/Edit Employment',
+                          height: 550,
+                          width: 600,
+                          close: function () {
+                              $dialog.dialog('destroy').remove();
+                          }
+                      })
+
+            $('.popupEmploymentWindow').on('submit', '#popupEmploymentForm', function (e) {
+                var url = $('#popupEmploymentForm')[0].action;
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: $('#popupEmploymentForm').serialize(),
+                    success: function (data) {
+                        if (data.status) {
+                            $dialog.dialog('close');
+                            oEmploymentTable.ajax.reload();
+                        }
+                    }
+                })
+
+                e.preventDefault();
+            })
+            $dialog.dialog('open');
+        }
+
+
+    });
+</script>

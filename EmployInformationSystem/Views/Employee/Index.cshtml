@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@section Css
+{
+    @Styles.Render("~/bundles/datatableCss", "~/bundles/jqueryuiCss")
+}
+
+<div class="container employeeContainer">
+    <h2>Employee Details</h2>
+    <a href="@Url.Action("Add","Employee")" class="btn btn-md btn-default">Add</a>
+  @*  <a class="popup btn btn-primary" href="/Employee/Add/0" style="margin-bottom:20px; margin-top:20px;">Add New Employee</a>*@
+    <table class="table table-bordered" id="employeeTbl">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>ApplyFor</th>
+                <th>ApplyDate</th>
+                <th>Mobile</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts
+{
+  @Scripts.Render("~/bundles/datatableJs", "~/bundles/jqueryuiJs", "~/bundles/jqueryval", "~/bundles/unobtrusiveJs")
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        var oTable = $('#employeeTbl').DataTable({
+            "ajax": {
+                "url": '@Url.Action("GetEmployees","Employee")',
+                "type": "get",
+                "datatype": "json"
+            },
+            "columns": [
+                { "data": "Contact.FirstName", "autoWidth": true },
+                { "data": "Contact.Email", "autoWidth": true },
+                { "data": "ApplyFor", "autoWidth": true },
+                {
+                    "data": "ApplyDate", "autoWidth": true,
+                    "type": "date",
+                    "render": function (value) {
+                        if (value === null) return "";
+
+                        var pattern = /Date\(([^)]+)\)/;
+                        var results = pattern.exec(value);
+                        var dt = new Date(parseFloat(results[1]));
+
+                        return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                    }
+                },
+                { "data": "Contact.Phone", "autoWidth": true },
+                {
+                    "data": "Id", "width": "50px", "render": function (data) {
+                        return '<a class="popup btn-info btn-sm" href="/Employee/Add/' + data + '">Edit</a>';
+                    }
+                },
+                {
+                    "data": "Id", "width": "50px", "render": function (data) {
+                        return '<a class="popup btn-danger btn-sm" href="/Employee/Add/' + data + '">Delete</a>';
+                    }
+                }
+            ]
+        })
+    });
+</script>
